@@ -13,7 +13,7 @@ public class RockFall : MonoBehaviour
     void Start()
     {
         Plateforms = GameObject.FindGameObjectsWithTag("Plateform");
-        rand = Random.Range(0, 9);
+        rand = Random.Range(1, 9);
         Instantiate(Rock,Plateforms[rand].transform);
     }
 }
