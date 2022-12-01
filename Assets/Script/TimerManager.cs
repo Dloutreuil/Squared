@@ -8,20 +8,31 @@ public class TimerManager : MonoBehaviour
     
 
     [Header("Component")]
-    public TextMeshProUGUI GameViewTime;
-    public TextMeshProUGUI PauseMenuTime;
-    public GameObject PauseMenuUI;
-    public GameObject GameViewUI;
     public GameObject MainMenuUI;
+    
+    public GameObject GameViewUI;
+    public TextMeshProUGUI GameViewTime;
+    public GameObject PauseMenuUI;
+    public TextMeshProUGUI PauseMenuTime;
+    public TextMeshProUGUI PMBestTime;
+    public GameObject GameOverUI;
+    public TextMeshProUGUI GameOverTime;
+    public TextMeshProUGUI GOBestTime;
 
     [Header("Timer Settings")]
     public float currentTime;
+    public float bestTime;
     public bool countDown;
 
     [Header("Limit Settings")]
     public bool hasLimit;
     public float timerLimit;
     public bool GameIsPaused = false;
+
+    private void Start()
+    {
+        bestTime = 0;
+    }
 
 
 
@@ -33,38 +44,79 @@ public class TimerManager : MonoBehaviour
         if(hasLimit && ((countDown && currentTime <= timerLimit) || (!countDown && currentTime >= timerLimit)))
         {
             currentTime = timerLimit;
-            SetTimerText();
+            SetCurrentTimerText();
             enabled = false;
         }
 
-        SetTimerText();
+        SetCurrentTimerText();
+        SetBestTimerText();
 
-        if(PauseMenuUI.activeInHierarchy)
+        if (MainMenuUI.activeInHierarchy)
         {
             Time.timeScale = 0f;
-            GameIsPaused = true;
+            currentTime = 0;
+            countDown = false;
         }
         if(GameViewUI.activeInHierarchy)
         {
             Time.timeScale = 1f;
             GameIsPaused = false;
+            countDown = false;
         }
-        if (MainMenuUI.activeInHierarchy)
+        if(PauseMenuUI.activeInHierarchy)
         {
             Time.timeScale = 0f;
-            currentTime = 0;
+            GameIsPaused = true;
+            countDown = false;
         }
-        
+        if (GameOverUI.activeInHierarchy && currentTime > bestTime)
+        {
+            Time.timeScale = 0f;
+            GameIsPaused = true;
+            countDown = true;
+            bestTime = currentTime;
+            SaveBestTime();
+            
+            
+        }
+        if (GameOverUI.activeInHierarchy && currentTime <= bestTime)
+        {
+            Time.timeScale = 0f;
+            GameIsPaused = true;
+            countDown = true;
+            LoadBestTime();
+            
+        }
+
+
     }
 
-    private void SetTimerText()
+    private void SetCurrentTimerText()
     {
-        GameViewTime.text = string.Format("{00:00}:{01:00}", Mathf.Floor(currentTime / 59), currentTime % 59);
+        float minutes = Mathf.FloorToInt(currentTime / 59);
+        float seconds = Mathf.FloorToInt(currentTime % 59);
+                
+        GameViewTime.text = string.Format("{00:00}:{01:00}", minutes, seconds);
         PauseMenuTime.text = GameViewTime.text;
+        GameOverTime.text = GameViewTime.text;
+                    
+    }
+    private void SetBestTimerText()
+    {
+        float minutes = Mathf.FloorToInt(bestTime / 59);
+        float seconds = Mathf.FloorToInt(bestTime % 59);
+
+        GOBestTime.text = string.Format("{00:00}:{01:00}", minutes, seconds);
+        PMBestTime.text = GOBestTime.text;
+    }
+    public void SaveBestTime()
+    {
+        SaveSystem.SaveBestTime(this);
     }
 
-    void Pause()
+    public void LoadBestTime()
     {
-        
+        PlayerData data = SaveSystem.LoadBestTime();
     }
+   
 }
