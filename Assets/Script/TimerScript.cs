@@ -16,8 +16,8 @@ public class TimerScript : MonoBehaviour
 
     void Update()
     {
-        GetComponent<Text>().text = string.Format ("{0:0}:{1:00}",Mathf.Floor(time/60),time%60);
-        time = (int)Time.time;
+        GetComponent<Text>().text = string.Format ("{0:00}:{1:00}",Mathf.Floor(time/60),time%60);
+        time = (int)Time.time;    
 
         if(time == tick)
         {
