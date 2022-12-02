@@ -1,21 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerDeath : MonoBehaviour
 {
     [Header("Component")]
-    
+
     public GameObject gameOverUI;
     public GameObject gameView;
     public GameObject player;
 
     public SwipeTest playerSwipeTest;
-    
-    
+
+
     public void Start()
     {
-        
+
 
         playerSwipeTest = GetComponent<SwipeTest>();
     }
@@ -34,9 +35,12 @@ public class PlayerDeath : MonoBehaviour
             player.transform.position = new Vector3(0, 2, 0);
 
             playerSwipeTest.desiredPosition = new Vector3(0, 1, 0);
-            
-         }
+
+        }
     }
 
-    
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 }
