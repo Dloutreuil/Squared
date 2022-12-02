@@ -69,7 +69,7 @@ public class TimerManager : MonoBehaviour
             GameIsPaused = true;
             countDown = false;
         }
-        if (GameOverUI.activeInHierarchy && currentTime > bestTime)
+        if(GameOverUI.activeInHierarchy && currentTime > bestTime)
         {
             Time.timeScale = 0f;
             GameIsPaused = true;
