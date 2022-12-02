@@ -10,7 +10,10 @@ public class PlayerCoins : MonoBehaviour
     public TextMeshProUGUI runCoinCounter;
     public TextMeshProUGUI gameOverCoinCounter;
     public TextMeshProUGUI totalCoinCounter;
+    public GameObject gameOverUI;
    
+    
+
 
     [Header("Counter Settings")]
     public int currentCoins;
@@ -31,9 +34,20 @@ public class PlayerCoins : MonoBehaviour
     private void Update()
     {
         gameOverCoinCounter.text = currentCoins.ToString("+ 0");
+        totalCoinCounter.text = totalCoins.ToString("0");
 
-        totalCoinCounter.text = currentCoins.ToString("0");
-        
+        /*if (GameOverUI.activeInHierarchy)
+        {
+            LoadTotalCoins();
+            
+            if(currentCoins > 0)
+            {
+                totalCoins += currentCoins;
+                SaveTotalCoins();
+            }
+
+        }*/
+
     }
 
     private void OnTriggerEnter(Collider collision)
@@ -46,8 +60,23 @@ public class PlayerCoins : MonoBehaviour
 
             Destroy(collision.gameObject);
         }
+
+        
+    }
+    public void SaveTotalCoins()
+    {
+        SaveSystem.SaveTotalCoins(this);
     }
 
-    
+    public void LoadTotalCoins()
+    {
+        PlayerData data = SaveSystem.LoadTotalCoins();
+    }
 
+   
+    
+    private void GameOver()
+    {
+        
+    }
 }

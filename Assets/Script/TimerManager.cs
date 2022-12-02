@@ -12,9 +12,11 @@ public class TimerManager : MonoBehaviour
     
     public GameObject GameViewUI;
     public TextMeshProUGUI GameViewTime;
+    
     public GameObject PauseMenuUI;
     public TextMeshProUGUI PauseMenuTime;
     public TextMeshProUGUI PMBestTime;
+    
     public GameObject GameOverUI;
     public TextMeshProUGUI GameOverTime;
     public TextMeshProUGUI GOBestTime;
