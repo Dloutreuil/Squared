@@ -6,6 +6,7 @@ using UnityTimer;
 public class PlatformFall : MonoBehaviour
 {
     public int seccondsDelay;
+    public float multiplier;
     private GameObject[] Plateforms;
     private int Rand;
     private int lenghtList;
@@ -14,7 +15,7 @@ public class PlatformFall : MonoBehaviour
     
 
     // Start is called before the first frame update
-    void Start()
+    public void platformFall()
     {
         if(_timer != null)
         {
@@ -29,21 +30,25 @@ public class PlatformFall : MonoBehaviour
 
         //Debug.Log(GetClipDuration("IsFalling"));
 
+        animator.SetBool("IsFalling", true);
 
-        _timer = Timer.Register(GetClipDuration("PlatFall",animator), () => {
-            Debug.Log("timerCompleted");
-            Debug.Log(GetClipDuration("PlatFall",animator));
+        _timer = Timer.Register(GetClipDuration("PlatFall",animator)*multiplier, () => {
 
+            Plateforms[Rand].SetActive(false);
+
+            _timer = Timer.Register(3f, () =>
+              {
+                  animator.SetBool("IsFalling", false);
+                  animator.SetBool("FirstTimeFall", true);
+                  Plateforms[Rand].SetActive(true);
+
+              });
+
+            //Debug.Log("timerCompleted");
+            //Debug.Log(GetClipDuration("PlatFall",animator));
         }
         );
 
-        animator.SetBool("IsFalling",true);
-        
-        //Plateforms[Rand].SetActive(false);
-
-        //animator.SetBool("IsFalling", false);
-        //animator.SetBool("FirstTimeFall", true);
-        //Plateforms[Rand].SetActive(true);
     }
 
     public float GetClipDuration(string animName,Animator anim)
